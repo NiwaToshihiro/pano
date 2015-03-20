@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>texture</title>
+        <meta charset="UTF-8">
+            <script src="three.min.js"></script>
+            <script src="OrbitControls.js"></script>
+            <style>
+                body {
+                    margin: 0px;
+                    overflow: hidden;
+                }
+            </style>
+    
+    <body>
+        <div id="canvas_frame"></div>
+        <script>
+            
+           
+           var scene = new THREE.Scene();
+            
+           var camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 0.1, 1000 );
+            //var camera = new THREE.OrthographicCamera( -300, 300, -300, 300, 1, 1000 )
+           
+           controls = new THREE.OrbitControls(camera);
+
+           var renderer = new THREE.WebGLRenderer();
+           renderer.setSize( window.innerWidth, window.innerHeight );
+           renderer.setClearColor(0xffffcc, 1.0);
+           document.body.appendChild( renderer.domElement );
+
+           var texture01_A = THREE.ImageUtils.loadTexture( '01_A.bmp');
+           var texture01_B = THREE.ImageUtils.loadTexture( '01_B.bmp');
+
+           var texture02_A = THREE.ImageUtils.loadTexture( '02_A.bmp');
+           var texture02_B = THREE.ImageUtils.loadTexture( '02_B.bmp');
+ 
+           var texture03_A = THREE.ImageUtils.loadTexture( '03_A.bmp');
+           var texture03_B = THREE.ImageUtils.loadTexture( '03_B.bmp');
+
+           var texture04_A = THREE.ImageUtils.loadTexture( '04_A.bmp');
+           var texture04_B = THREE.ImageUtils.loadTexture( '04_B.bmp');
+ 
+           var texture05_A = THREE.ImageUtils.loadTexture( '05_A.bmp');
+           var texture05_B = THREE.ImageUtils.loadTexture( '05_B.bmp');
+
+           var texture06_A = THREE.ImageUtils.loadTexture( '06_A.bmp');
+           var texture06_B = THREE.ImageUtils.loadTexture( '06_B.bmp');
+
+           var geometry1 = new THREE.PlaneGeometry(25.6, 14.4);
+           var material1 = new THREE.MeshBasicMaterial({map: texture01_A, side: THREE.DoubleSide});
+           var screen1 = new THREE.Mesh(geometry1, material1);
+           scene.add(screen1);
+           screen1.position.x = 0;
+           screen1.position.y = 7.2;
+           screen1.position.z = -35;
+
+           var geometry2 = new THREE.PlaneGeometry(25.6, 14.4);
+           var material2 = new THREE.MeshBasicMaterial({map: texture02_A, side:THREE.DoubleSide});
+           var screen2 = new THREE.Mesh(geometry2, material2);
+           screen2.rotation.y = - Math.PI /3
+           scene.add(screen2);
+           screen2.position.x = 30;
+           screen2.position.y = 7.2;
+           screen2.position.z = -20;
+           
+           var geometry3 = new THREE.PlaneGeometry(25.6, 14.4);
+           var material3 = new THREE.MeshBasicMaterial({map: texture03_A, side:THREE.DoubleSide});
+           var screen3 = new THREE.Mesh(geometry3, material3);
+           screen3.rotation.y =  Math.PI /3
+           scene.add(screen3);
+           screen3.position.x = 30;
+           screen3.position.y = 7.2;
+           screen3.position.z = 20;
+           
+           var geometry4 = new THREE.PlaneGeometry(25.6, 14.4);
+           var material4 = new THREE.MeshBasicMaterial({map: texture04_A, side:THREE.DoubleSide});
+           var screen4 = new THREE.Mesh(geometry4, material4);
+           scene.add(screen4);
+           screen4.position.x = 0;
+           screen4.position.y = 7.2;
+           screen4.position.z = 35;
+           
+           var geometry5 = new THREE.PlaneGeometry(25.6, 14.4);
+           var material5 = new THREE.MeshBasicMaterial({map: texture05_A, side:THREE.DoubleSide});
+           var screen5 = new THREE.Mesh(geometry5, material5);
+           screen5.rotation.y =  - Math.PI /3
+           scene.add(screen5);
+           screen5.position.x = -30;
+           screen5.position.y = 7.2;
+           screen5.position.z = 20;
+           
+           var geometry6 = new THREE.PlaneGeometry(25.6, 14.4);
+           var material6 = new THREE.MeshBasicMaterial({map: texture06_A, side:THREE.DoubleSide});
+           var screen6 = new THREE.Mesh(geometry6, material6);
+           screen6.rotation.y =  Math.PI /3
+           scene.add(screen6);
+           screen6.position.x = -30;
+           screen6.position.y = 7.2;
+           screen6.position.z = -20;
+           
+           var floor = new THREE.Mesh(
+                new THREE.CircleGeometry(50, 200),
+                new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'birdeye.bmp' ), side:THREE.DoubleSide }));
+           floor.position.y = - 5;
+           floor.rotation.x = Math.PI / 2;
+           floor.rotation.z = Math.PI;
+           scene.add(floor);
+　　　　　
+
+           var axis = new THREE.AxisHelper(1000);
+           scene.add( axis );
+           
+           camera.position.z = 100;
+           
+           var frame = 0;
+           
+        
+    function render() {
+       frame++;
+        if (frame > 30) {
+            material1.map = texture01_B; material2.map = texture02_B; material3.map = texture03_B;
+            material4.map = texture04_B; material5.map = texture05_B; material6.map = texture06_B;
+            material1.needsUpdsate = true; material2.needsUpdate = true; material3.needsUpdate = true;
+            material4.needsUpdate = true; material5.needsUpdate = true; material6.needsUpdate = true;
+            console.log('texture change')
+        }
+        if (frame > 60) {
+            material1.map = texture01_A; material2.map = texture02_A; material3.map = texture03_A;
+            material4.map = texture04_A; material5.map = texture05_A; material6.map = texture06_A;
+            material1.needsUpdate = true; material2.needsUpdate = true; material3.needsUpdate = true;
+            material4.needsUpdate = true; material5.needsUpdate = true; material6.needsUpdate = true;
+            frame = 0;
+            console.log('texture change')
+        }
+
+            requestAnimationFrame(render);
+
+            controls.update();
+
+            renderer.render(scene, camera);
+            
+    };
+        render();
+
+            
+            </script>
+    </body>
+</html>
